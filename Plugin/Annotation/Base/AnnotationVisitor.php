@@ -19,25 +19,11 @@ use const ast\flags\USE_NORMAL;
 abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
 {
   /**
-   * Holds the class annotations that need to be checked for every class
+   * Holds the exceptions for a specific framework
    *
    * @var array
    */
-  protected $classAnnotationsToCheck = [];
-
-  /**
-   * Holds the method annotations that need to be checked for every class
-   *
-   * @var array<string>
-   */
-  protected $methodAnnotationsToCheck = [];
-
-  /**
-   * Holds the property annotations that need to be checked for every class
-   *
-   * @var array<string>
-   */
-  protected $propertyAnnotationsToCheck = [];
+  protected $exceptions = [];
 
   /**
    * Visit class
@@ -48,7 +34,7 @@ abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
    */
   public function visitClass(Node $node)
   {
-    $this->checkDocBlock($node, $this->classAnnotationsToCheck);
+    $this->checkDocComment($node);
   }
 
   /**
@@ -60,7 +46,7 @@ abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
    */
   public function visitMethod(Node $node)
   {
-    $this->checkDocBlock($node, $this->methodAnnotationsToCheck);
+    $this->checkDocComment($node);
   }
 
   /**
@@ -72,53 +58,49 @@ abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
    */
   public function visitPropElem(Node $node)
   {
-    $this->checkDocBlock($node, $this->propertyAnnotationsToCheck);
+    $this->checkDocComment($node);
   }
 
   /**
    * Retrieves the docblock for the node, and checks for the given annotations
    *
    * @param Node $node
-   * @param array $annotationsToCheck
    *
    * @throws \AssertionError
    */
-  private function checkDocBlock(Node $node, array $annotationsToCheck){
+  private function checkDocComment(Node $node){
     // Retrieve the doc block
-    $docblock = $node->children['docComment'];
+    $docComment = $node->children['docComment'];
 
     // Ignore empty doc blocks
-    if ($docblock === NULL || strlen($docblock) == 0) {
+    if ($docComment === NULL || strlen($docComment) == 0) {
       return;
     }
 
-    // Loop the known annotations in order to check them
-    foreach ($annotationsToCheck as $annotation) {
-      $this->checkAnnotation($docblock, $annotation);
+    // Retrieve all annotations from the doc comment
+    preg_match_all('/\s*\*\s*\@([A-Z][a-zA-Z]+)[\\\(]?/', $docComment, $matches);
+    foreach ($matches[1] as $annotation){
+      // Check for exceptions
+      if (in_array($annotation, $this->exceptions)) continue;
+
+      // Check for annotation
+      $this->checkAnnotation($annotation);
     }
   }
 
   /**
-   * Checks whether the given annotation is used in the docblock comment, and then resolves
-   * it in the namespace map.
+   * Checks whether the given annotation is imported, and then resolves it in the namespace map.
    *
-   * @param string $docblock
    * @param string $annotation
    *
    * @throws \AssertionError
    */
-  private function checkAnnotation(string $docblock, string $annotation)
+  private function checkAnnotation(string $annotation)
   {
-
-    // If the docblock does not contain the annotation, simply skip it
-    if (false === strpos($docblock, '@' . $annotation)) {
-      return;
-    }
-
     try {
       // Check for map to avoid exceptions
       if ($this->context->hasNamespaceMapFor(USE_NORMAL, $annotation)) {
-        // Add usuage of this annotation to the namespace map
+        // Add usage of this annotation to the namespace map
         // See https://github.com/phan/phan/pull/1467
         $this->context->getNamespaceMapFor(USE_NORMAL, $annotation);
       } else {

@@ -37,23 +37,8 @@ class SymfonyAnnotationVisitor extends AnnotationVisitor
   /**
    * {@inheritdoc}
    */
-  protected $classAnnotationsToCheck = [
-      'Assert',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $methodAnnotationsToCheck = [
-      'Route',
-      'Template',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $propertyAnnotationsToCheck = [
-      'Assert',
+  protected $exceptions = [
+      'Annotation',
   ];
 }
 

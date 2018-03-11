@@ -2,8 +2,10 @@
 
 namespace Drenso\PhanExtensions\Plugin\Annotation;
 
+require_once 'Base/AnnotationPlugin.php';
+
 use Drenso\PhanExtensions\Plugin\Annotation\Base\AnnotationPlugin;
-use Drenso\PhanExtensions\Visitor\Annotation\VichAnnotationVisitor;
+use Drenso\PhanExtensions\Visitor\Annotation\Base\AnnotationVisitor;
 
 /**
  * Class VichAnnotationPlugin
@@ -21,6 +23,30 @@ class VichAnnotationPlugin extends AnnotationPlugin
   {
     return VichAnnotationVisitor::class;
   }
+}
+
+/**
+ * Class VichAnnotationVisitor
+ *
+ * {@inheritdoc}
+ *
+ * @author BobV
+ */
+class VichAnnotationVisitor extends AnnotationVisitor
+{
+  /**
+   * {@inheritdoc}
+   */
+  protected $classAnnotationsToCheck = [
+      'Vich',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $propertyAnnotationsToCheck = [
+      'Vich',
+  ];
 }
 
 // Every plugin needs to return an instance of itself at the

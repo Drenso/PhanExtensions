@@ -2,8 +2,10 @@
 
 namespace Drenso\PhanExtensions\Plugin\Annotation;
 
+require_once 'Base/AnnotationPlugin.php';
+
 use Drenso\PhanExtensions\Plugin\Annotation\Base\AnnotationPlugin;
-use Drenso\PhanExtensions\Visitor\Annotation\JmsAnnotationVisitor;
+use Drenso\PhanExtensions\Visitor\Annotation\Base\AnnotationVisitor;
 
 /**
  * Class JmsAnnotationPlugin
@@ -21,6 +23,30 @@ class JmsAnnotationPlugin extends AnnotationPlugin
   {
     return JmsAnnotationVisitor::class;
   }
+}
+
+/**
+ * Class JmsAnnotationVisitor
+ *
+ * {@inheritdoc}
+ *
+ * @author BobV
+ */
+class JmsAnnotationVisitor extends AnnotationVisitor
+{
+  /**
+   * {@inheritdoc}
+   */
+  protected $classAnnotationsToCheck = [
+      'JMS',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $propertyAnnotationsToCheck = [
+      'JMS',
+  ];
 }
 
 // Every plugin needs to return an instance of itself at the

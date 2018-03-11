@@ -2,8 +2,10 @@
 
 namespace Drenso\PhanExtensions\Plugin\Annotation;
 
+require_once 'Base/AnnotationPlugin.php';
+
 use Drenso\PhanExtensions\Plugin\Annotation\Base\AnnotationPlugin;
-use Drenso\PhanExtensions\Visitor\Annotation\SymfonyAnnotationVisitor;
+use Drenso\PhanExtensions\Visitor\Annotation\Base\AnnotationVisitor;
 
 /**
  * Class SymfonyAnnotationPlugin
@@ -21,6 +23,38 @@ class SymfonyAnnotationPlugin extends AnnotationPlugin
   {
     return SymfonyAnnotationVisitor::class;
   }
+}
+
+/**
+ * Class SymfonyAnnotationVisitor
+ *
+ * {@inheritdoc}
+ *
+ * @author BobV
+ */
+class SymfonyAnnotationVisitor extends AnnotationVisitor
+{
+  /**
+   * {@inheritdoc}
+   */
+  protected $classAnnotationsToCheck = [
+      'Assert',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $methodAnnotationsToCheck = [
+      'Secure',
+      'Template',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $propertyAnnotationsToCheck = [
+      'Assert',
+  ];
 }
 
 // Every plugin needs to return an instance of itself at the

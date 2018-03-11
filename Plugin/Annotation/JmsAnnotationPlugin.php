@@ -44,6 +44,13 @@ class JmsAnnotationVisitor extends AnnotationVisitor
   /**
    * {@inheritdoc}
    */
+  protected $methodAnnotationsToCheck = [
+      'Secure',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
   protected $propertyAnnotationsToCheck = [
       'JMS',
   ];

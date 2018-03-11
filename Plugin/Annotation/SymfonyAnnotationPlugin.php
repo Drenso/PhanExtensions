@@ -45,6 +45,7 @@ class SymfonyAnnotationVisitor extends AnnotationVisitor
    * {@inheritdoc}
    */
   protected $methodAnnotationsToCheck = [
+      'Route',
       'Secure',
       'Template',
   ];

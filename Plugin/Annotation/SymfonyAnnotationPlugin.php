@@ -39,6 +39,7 @@ class SymfonyAnnotationVisitor extends AnnotationVisitor
    */
   protected $exceptions = [
       'Annotation',
+      'Target'
   ];
 }
 

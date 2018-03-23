@@ -15,8 +15,11 @@ use Phan\PluginV2\AnalyzeClassCapability;
 
 class InlineVarPlugin extends PluginV2 implements AnalyzeClassCapability
 {
-  /** @var array<string,bool> - A file can have more than one class, even though that goes against PSRs. */
-  private $analyzedFileSet;
+  /**
+   * @var array<string,bool> - A file can have more than one class, even though that goes against some style guides.
+   *  So only analyze the file once, and assume there's only one namespace.
+   */
+  private $analyzedFileSet = [];
 
   public function analyzeClass(CodeBase $codeBase, Clazz $class)
   {
@@ -25,7 +28,7 @@ class InlineVarPlugin extends PluginV2 implements AnalyzeClassCapability
     if ($file->isPHPInternal()) return;
 
     $fileName = $file->getFile();
-    // Save time: check files that are going to be analyzed. (Alternately, could look into PostAnalysisVisitor and putting the same code in visitClass/visitFunc
+    // Save time: skip files that won't be analyzed.
     if (Phan::isExcludedAnalysisFile($fileName)) {
       return;
     }
@@ -41,21 +44,24 @@ class InlineVarPlugin extends PluginV2 implements AnalyzeClassCapability
       // Set line number to found one
       $context = $class->getContext();
       $lineNumber = $context->getLineNumberStart();
-      foreach ($tokens as $token) {
-        if (!\is_array($token)) {
-            return;
+      try {
+        foreach ($tokens as $token) {
+          if (!\is_array($token)) {
+              continue;
+          }
+          // Filter comment tokens
+          if ($token[0] != T_COMMENT && $token[0] !== T_DOC_COMMENT) continue;
+
+          $class->getContext()->withLineNumberStart($token[2]);
+
+          // Retrieve errors
+          $this->findUsages($codeBase, $class, $token[1]);
+
         }
-        // Filter comment tokens
-        if ($token[0] != T_COMMENT && $token[0] !== T_DOC_COMMENT) continue;
-
-        $class->getContext()->withLineNumberStart($token[2]);
-
-        // Retrieve errors
-        $this->findUsages($codeBase, $class, $token[1]);
-
+      } finally {
+        // Restore line number to prevent errors
+        $context->withLineNumberStart($lineNumber);
       }
-      // Restore line number to prevent errors
-      $context->withLineNumberStart($lineNumber);
     } else {
       // Forward complete file content
       $this->findUsages($codeBase, $class, $fileContents);

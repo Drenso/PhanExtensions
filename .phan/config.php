@@ -119,6 +119,6 @@ return [
         'PrintfCheckerPlugin',
 
         // Check this plugin's own source for missing inline variable types (None used?)
-        //'Plugin/DocComment/InlineVarPlugin.php',
+        'Plugin/DocComment/InlineVarPlugin.php',
     ],
 ];

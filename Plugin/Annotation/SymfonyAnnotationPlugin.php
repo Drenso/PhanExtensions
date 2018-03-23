@@ -37,6 +37,7 @@ class SymfonyAnnotationVisitor extends AnnotationVisitor
   /**
    * {@inheritdoc}
    * @suppress PhanUnreferencedProtectedProperty (unused in base class?)
+   * @suppress PhanUnreferencedPublicProperty (This is needed to suppress this in phan 0.12.2)
    */
   protected $exceptions = [
       'Annotation',

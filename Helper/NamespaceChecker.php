@@ -5,76 +5,78 @@ namespace Drenso\PhanExtensions\Helper;
 use Phan\CodeBase;
 use Phan\Language\Context;
 use Phan\Language\FQSEN\FullyQualifiedClassName;
-use Phan\Language\Type;
-use Phan\Language\Type\GenericArrayType;
-use Phan\Language\Type\TemplateType;
-use Phan\Language\UnionType;
-use Phan\PluginV2;
 use Phan\PluginV2\PluginAwarePostAnalysisVisitor;
+use const ast\flags\USE_NORMAL;
 
 class NamespaceChecker
 {
+
+  /**
+   * Default php types which need to be skipped
+   *
+   * @var array
+   */
+  private static $phpTypes = [
+      'array',
+      'bool',
+      'boolean',
+      'double',
+      'float',
+      'int',
+      'null',
+      'object',
+      'string',
+  ];
+
   /**
    * @param PluginAwarePostAnalysisVisitor $visitor
    * @param CodeBase $codeBase
    * @param Context $context
-   * @param string $unionTypeString
+   * @param string $name
    * @param string $issueType
    * @param string $issueMessageFmt
    */
   public static function checkVisitor(PluginAwarePostAnalysisVisitor $visitor, CodeBase $codeBase, Context $context,
-                                      string $unionTypeString, string $issueType, string $issueMessageFmt)
+                                      string $name, string $issueType, string $issueMessageFmt)
   {
-    foreach (self::getMissingClasses($codeBase, $context, $unionTypeString) as $typeFQSEN) {
-      $visitor->emit($issueType, $issueMessageFmt, [(string)$typeFQSEN]);
+    if (!self::doCheck($codeBase, $context, $name)) {
+      $visitor->emit($issueType, $issueMessageFmt, [$name]);
     }
   }
 
   /**
-   * @param PluginV2 $plugin
    * @param CodeBase $codeBase
    * @param Context $context
-   * @param string $unionTypeString
-   * @param string $issueType
-   * @param string $issueMessageFmt
+   * @param string $name
+   * @return bool
    */
-  public static function checkPlugin(PluginV2 $plugin, CodeBase $codeBase, Context $context,
-                                     string $unionTypeString, string $issueType, string $issueMessageFmt)
+  private static function doCheck(CodeBase $codeBase, Context $context, string $name)
   {
-    foreach (self::getMissingClasses($codeBase, $context, $unionTypeString) as $typeFQSEN) {
-      $plugin->emitIssue($codeBase, $context, $issueType, $issueMessageFmt, [(string)$typeFQSEN]);
-    }
-  }
 
-  // yields a list of 0 or more types which are missing. Those may or may not have leading '\'es.
-  private static function getMissingClasses(CodeBase $code_base, Context $context, string $unionTypeString) : \Generator {
-    if (!$unionTypeString) {
-      return;
-    }
     // Filter for false positives
-    // TODO: Use parameterFromCommentLine instead, which invokes UnionType::fromStringInContext for us.
+    if ($name === "" || $name === "[]") return true;
+    if (in_array($name, self::$phpTypes)) return true;
 
-    // This passed the regex, so fromStringInContext shouldn't throw
-    $unionType = UnionType::fromStringInContext($unionTypeString, $context, Type::FROM_PHPDOC);
+    try {
+      // Check for map to avoid exceptions
+      // This only works if the name is actually namespaced by a use statement
+      if ($context->hasNamespaceMapFor(USE_NORMAL, $name)) {
+        // Add usage of this annotation to the namespace map
+        // See https://github.com/phan/phan/pull/1467
+        $context->getNamespaceMapFor(USE_NORMAL, $name);
+        return true;
+      }
 
-    // This check is based on \Phan\Analysis\ParameterTypesAnalyzer
-    foreach ($unionType->getTypeSet() as $type) {
-      // TODO: Handle ArrayShapeType
-      while ($type instanceof GenericArrayType) {
-        $type = $type->genericArrayElementType();
+      // Check whether the class is known in the current namespace (which does not require an explicit import)
+      $fqc = FullyQualifiedClassName::make($context->getNamespace(), $name);
+      if ($codeBase->hasClassWithFQSEN($fqc)) {
+        return true;
       }
-      if ($type->isNativeType() ||($type->isSelfType() | $type->isStaticType())) {
-        continue;
-      }
-      if ($type instanceof TemplateType) {
-        // should be impossible, $context is a class declaration's context, not inside a method.
-        continue;
-      }
-      // Should always be a class name
-      $type_fqsen = $type->asFQSEN();
-      if ($type_fqsen instanceof FullyQualifiedClassName && !$code_base->hasClassWithFQSEN($type_fqsen)) {
-        yield $type_fqsen;
-      }
+    } catch (\AssertionError $e) {
+      // Do nothing, simply ignore
+      return true;
     }
+
+    return false;
   }
 }

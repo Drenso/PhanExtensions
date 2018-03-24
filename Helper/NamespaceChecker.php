@@ -5,7 +5,6 @@ namespace Drenso\PhanExtensions\Helper;
 use Phan\CodeBase;
 use Phan\Language\Context;
 use Phan\Language\FQSEN\FullyQualifiedClassName;
-use Phan\PluginV2;
 use Phan\PluginV2\PluginAwarePostAnalysisVisitor;
 use const ast\flags\USE_NORMAL;
 
@@ -14,7 +13,7 @@ class NamespaceChecker
 
   /**
    * Default php types which need to be skipped
-   * 
+   *
    * @var array
    */
   private static $phpTypes = [
@@ -42,22 +41,6 @@ class NamespaceChecker
   {
     if (!self::doCheck($codeBase, $context, $name)) {
       $visitor->emit($issueType, $issueMessageFmt, [$name]);
-    }
-  }
-
-  /**
-   * @param PluginV2 $plugin
-   * @param CodeBase $codeBase
-   * @param Context $context
-   * @param string $name
-   * @param string $issueType
-   * @param string $issueMessageFmt
-   */
-  public static function checkPlugin(PluginV2 $plugin, CodeBase $codeBase, Context $context,
-                                     string $name, string $issueType, string $issueMessageFmt)
-  {
-    if (!self::doCheck($codeBase, $context, $name)) {
-      $plugin->emitIssue($codeBase, $context, $issueType, $issueMessageFmt, [$name]);
     }
   }
 

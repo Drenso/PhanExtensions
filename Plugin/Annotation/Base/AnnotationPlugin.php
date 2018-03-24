@@ -2,7 +2,7 @@
 
 namespace Drenso\PhanExtensions\Plugin\Annotation\Base;
 
-require_once 'AnnotationVisitor.php';
+require_once __DIR__ . '/AnnotationVisitor.php';
 
 use Phan\PluginV2;
 use Phan\PluginV2\PostAnalyzeNodeCapability;

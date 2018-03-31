@@ -4,6 +4,6 @@ return [
         'src'
     ],
     'plugins' => [
-        './../Plugin/DocComment/InlineVarPlugin.php',
+        './../../../../Plugin/DocComment/InlineVarPlugin.php',
     ],
 ];

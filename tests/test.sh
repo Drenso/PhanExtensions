@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
+
+echo "Running tests in $PWD..."
+
 EXPECTED_PATH=expected/all_output.expected
 ACTUAL_PATH=all_output.actual
-if [ ! -e $EXPECTED_PATH ]; then
-	echo "Error: must run this script from tests folder" 1>&2
+
+# Check for expected output file
+if [ ! -e $EXPECTED_PATH  ]; then
+	echo "Error: expected output file not found!" 1>&2
 	exit 1
 fi
-echo "Running phan in '$PWD' ..."
-rm $ACTUAL_PATH -f
-./../vendor/bin/phan | tee $ACTUAL_PATH
+
+# Remove output file (if any)
+rm -f $ACTUAL_PATH
+
+# Run phan, forward output to file
+$1/vendor/bin/phan | tee $ACTUAL_PATH
+
 # diff returns a non-zero exit code if files differ or are missing
 # This outputs the difference between actual and expected output.
 echo

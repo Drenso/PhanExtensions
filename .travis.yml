@@ -34,4 +34,4 @@ script:
   # Self-analyze (Includes checks for unused variables)
   - vendor/bin/phan
   # Run the test suite
-  - cd tests; ./test.sh
+  - cd tests; ./run_tests.sh

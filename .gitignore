@@ -2,3 +2,5 @@
 vendor
 *.phar
 *.lock
+tests/**/*.actual
+tests/**/test.sh

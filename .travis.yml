@@ -1,0 +1,37 @@
+# Copied from https://github.com/phan/PhanUnusedVariable/blob/master/.travis.yml
+
+language: php
+
+# PhanUnusedVariable can be used with any PHP version from 7.0 to 7.2.
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+
+sudo: false
+dist: trusty
+
+# Use a cache: Slightly speed up composer installation and building php-ast
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.cache/phan-ast/build
+
+# We invoke php multiple times via CLI in several tests, so enable the opcache file cache.
+before_install:
+  - ./tests/travis_setup.sh
+  #- composer validate # Skip because 'Name "mattriverm/PhanUnusedVariable" does not match the best practice (e.g. lower-cased/with-dashes).
+# Optional: --classmap-authoritative --prefer-dist makes running this test slightly faster,
+# and imitates phan's recommended settings
+install:
+  - composer --prefer-dist --classmap-authoritative install
+
+# TEST_SUITES contains 1 or more space-separated value for TEST_SUITE
+# We have a fake TEST_SUITE which runs phan, and check if the exit code is non-zero and the standard output is non-empty.
+# This is used instead of a unit test because Phan currently caches too much state for this to be run with other unit tests, and the configuration might end up different within a unit test.
+# This was moved into a separate script to stop cluttering up .travis.yml
+script:
+  # Self-analyze (Includes checks for unused variables)
+  - vendor/bin/phan
+  # Run the test suite
+  - cd tests; ./test.sh

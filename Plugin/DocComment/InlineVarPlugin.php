@@ -80,7 +80,7 @@ class InlineVarPlugin extends PluginV2 implements AnalyzeClassCapability
    * @param Clazz $class
    * @param string $content
    */
-  private function findUsages(CodeBase $codeBase, Clazz $class, string $content): void
+  private function findUsages(CodeBase $codeBase, Clazz $class, string $content)
   {
     \preg_match_all(self::var_comment_regex, $content, $matches);
     $results = $matches[1];

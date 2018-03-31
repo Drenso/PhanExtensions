@@ -3,9 +3,12 @@
     "description": "This project contains several extensions (stubs/plugins) to be used with Phan for static PHP analysis",
     "keywords": ["phan", "plugin", "plugins", "stub", "stubs", "symfony"],
     "homepage": "https://github.com/Drenso/PhanExtensions",
-    "type": "library",
+    "type": "project",
+    "config": {
+        "sort-packages": true
+    },
     "require-dev": {
-        "phan/phan": "0.12.*"
+        "phan/phan": "^0.12.2"
     },
     "license": "MIT",
     "authors": [
@@ -18,10 +21,6 @@
             "email": "tobias@drenso.nl"
         }
     ],
-    "minimum-stability": "stable",
-    "autoload": {
-        "psr-4": {
-            "Drenso\\PhanExtensions\\": ""
-        }
-    }
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

@@ -19,3 +19,4 @@ define('CURLOPT_COOKIEJAR', -1);
 define('CURLOPT_COOKIEFILE', -1);
 define('CURLOPT_COOKIESESSION', -1);
 define('CURLOPT_USERAGENT', -1);
+define('CURLOPT_USERPWD', -1);

@@ -25,6 +25,8 @@ abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
    * Holds the exceptions for a specific framework
    *
    * @var array
+   *
+   * @suppress PhanReadOnlyProtectedProperty
    */
   protected $exceptions = [];
 

@@ -50,6 +50,7 @@ We currently have stubs for the following packages:
 
 - curl
 - intl
+- ldap
 - pdo
 - radius
 - sockets   

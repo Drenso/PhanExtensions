@@ -20,7 +20,6 @@ cache:
 # We invoke php multiple times via CLI in several tests, so enable the opcache file cache.
 before_install:
   - ./tests/travis_setup.sh
-  #- composer validate # Skip because 'Name "mattriverm/PhanUnusedVariable" does not match the best practice (e.g. lower-cased/with-dashes).
 # Optional: --classmap-authoritative --prefer-dist makes running this test slightly faster,
 # and imitates phan's recommended settings
 install:

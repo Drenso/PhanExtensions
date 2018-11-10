@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
-TOPLEVEL=$PWD
-for d in `find . -name .phan -type d`
+#!/bin/bash -e
+CURRENT_PATH=$PWD
+for DIR in `find . -name .phan -type d`
 do
-  cp test.sh $d/../test.sh
-  cd $d/../; ./test.sh ; cd $TOPLEVEL
+  cp test.sh ${DIR}/../test.sh
+  cd ${DIR}/../; ./test.sh ${CURRENT_PATH}/../; cd ${CURRENT_PATH}
 done

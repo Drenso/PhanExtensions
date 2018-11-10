@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -e
 # Source: https://github.com/phan/PhanUnusedVariable/blob/master/tests/travis_setup.sh
 if [[ "x${TRAVIS:-}" == "x" ]]; then
     echo "This should only be run in travis"

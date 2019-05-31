@@ -30,6 +30,8 @@ class SymfonyAnnotationPlugin extends AnnotationPlugin
  *
  * {@inheritdoc}
  *
+ * @suppress PhanUnreferencedClass
+ *
  * @author BobV
  */
 class SymfonyAnnotationVisitor extends AnnotationVisitor

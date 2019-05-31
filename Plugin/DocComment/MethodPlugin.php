@@ -10,6 +10,11 @@ use Phan\PluginV2\PluginAwarePostAnalysisVisitor;
 use Phan\PluginV2\PostAnalyzeNodeCapability;
 use ast\Node;
 
+/**
+ * Class MethodPlugin
+ *
+ * @suppress PhanDeprecatedInterface
+ */
 class MethodPlugin extends PluginV2 implements PostAnalyzeNodeCapability
 {
   public static function getPostAnalyzeNodeVisitorClassName(): string
@@ -18,6 +23,11 @@ class MethodPlugin extends PluginV2 implements PostAnalyzeNodeCapability
   }
 }
 
+/**
+ * Class MethodVisitor
+ *
+ * @suppress PhanUnreferencedClass, PhanDeprecatedInterface
+ */
 class MethodVisitor extends PluginAwarePostAnalysisVisitor
 {
 
@@ -50,4 +60,4 @@ class MethodVisitor extends PluginAwarePostAnalysisVisitor
 
 // Every plugin needs to return an instance of itself at the
 // end of the file in which its defined.
-return new MethodPlugin();
+return new MethodPlugin(); // @phan-suppress-current-line PhanDeprecatedInterface

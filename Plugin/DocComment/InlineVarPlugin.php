@@ -8,7 +8,6 @@ use Drenso\PhanExtensions\Helper\NamespaceChecker;
 use Phan\Phan;
 use Phan\CodeBase;
 use Phan\Language\Element\Clazz;
-use Phan\Language\Element\Comment\Builder;
 use Phan\Language\UnionType;
 use Phan\PluginV2;
 use Phan\PluginV2\AnalyzeClassCapability;
@@ -20,6 +19,15 @@ class InlineVarPlugin extends PluginV2 implements AnalyzeClassCapability
    *  So only analyze the file once, and assume there's only one namespace.
    */
   private $analyzedFileSet = [];
+
+  /**
+   * This regex contains a single pattern, which matches a valid PHP identifier.
+   * (e.g. for variable names, magic property names, etc.)
+   * This does not allow backslashes.
+   *
+   * Copied from Phan\Language\Element\Comment\Builder
+   */
+  const WORD_REGEX = '([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)';
 
   public function analyzeClass(CodeBase $codeBase, Clazz $class)
   {
@@ -73,7 +81,7 @@ class InlineVarPlugin extends PluginV2 implements AnalyzeClassCapability
   // 2. Make the union type mandatory
   // 3. Remove variadic/reference/param from the regex
   const var_comment_regex =
-    '/@(?:phan-)?var\b\s*(' . UnionType::union_type_regex . ')\s*\\$' . Builder::WORD_REGEX . '/';
+    '/@(?:phan-)?var\b\s*(' . UnionType::union_type_regex . ')\s*\\$' . self::WORD_REGEX . '/';
 
   /**
    * @param CodeBase $codeBase

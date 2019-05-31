@@ -8,7 +8,7 @@ use Drenso\PhanExtensions\Helper\NamespaceChecker;
 use Phan\Phan;
 use Phan\CodeBase;
 use Phan\Language\Element\Clazz;
-use Phan\Language\Element\Comment;
+use Phan\Language\Element\Comment\Builder;
 use Phan\Language\UnionType;
 use Phan\PluginV2;
 use Phan\PluginV2\AnalyzeClassCapability;
@@ -73,7 +73,7 @@ class InlineVarPlugin extends PluginV2 implements AnalyzeClassCapability
   // 2. Make the union type mandatory
   // 3. Remove variadic/reference/param from the regex
   const var_comment_regex =
-    '/@(?:phan-)?var\b\s*(' . UnionType::union_type_regex . ')\s*\\$' . Comment::WORD_REGEX . '/';
+    '/@(?:phan-)?var\b\s*(' . UnionType::union_type_regex . ')\s*\\$' . Builder::WORD_REGEX . '/';
 
   /**
    * @param CodeBase $codeBase

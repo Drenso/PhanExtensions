@@ -9,8 +9,8 @@ use Phan\Language\Type;
 use Phan\Language\Type\GenericArrayType;
 use Phan\Language\Type\TemplateType;
 use Phan\Language\UnionType;
-use Phan\PluginV2;
-use Phan\PluginV2\PluginAwarePostAnalysisVisitor;
+use Phan\PluginV3;
+use Phan\PluginV3\PluginAwarePostAnalysisVisitor;
 
 class NamespaceChecker
 {
@@ -31,14 +31,14 @@ class NamespaceChecker
   }
 
   /**
-   * @param PluginV2 $plugin
+   * @param PluginV3 $plugin
    * @param CodeBase $codeBase
    * @param Context $context
    * @param string $unionTypeString
    * @param string $issueType
    * @param string $issueMessageFmt
    */
-  public static function checkPlugin(PluginV2 $plugin, CodeBase $codeBase, Context $context,
+  public static function checkPlugin(PluginV3 $plugin, CodeBase $codeBase, Context $context,
                                      string $unionTypeString, string $issueType, string $issueMessageFmt)
   {
     foreach (self::getMissingClasses($codeBase, $context, $unionTypeString) as $typeFQSEN) {

@@ -9,10 +9,10 @@ use Phan\Phan;
 use Phan\CodeBase;
 use Phan\Language\Element\Clazz;
 use Phan\Language\UnionType;
-use Phan\PluginV2;
-use Phan\PluginV2\AnalyzeClassCapability;
+use Phan\PluginV3;
+use Phan\PluginV3\AnalyzeClassCapability;
 
-class InlineVarPlugin extends PluginV2 implements AnalyzeClassCapability
+class InlineVarPlugin extends PluginV3 implements AnalyzeClassCapability
 {
   /**
    * @var array<string,bool> - A file can have more than one class, even though that goes against some style guides.
@@ -29,7 +29,7 @@ class InlineVarPlugin extends PluginV2 implements AnalyzeClassCapability
    */
   const WORD_REGEX = '([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)';
 
-  public function analyzeClass(CodeBase $codeBase, Clazz $class)
+  public function analyzeClass(CodeBase $codeBase, Clazz $class): void
   {
     // Check the file ref
     $file = $class->getFileRef();

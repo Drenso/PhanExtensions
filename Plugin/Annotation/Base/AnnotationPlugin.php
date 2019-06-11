@@ -4,8 +4,8 @@ namespace Drenso\PhanExtensions\Plugin\Annotation\Base;
 
 require_once __DIR__ . '/AnnotationVisitor.php';
 
-use Phan\PluginV2;
-use Phan\PluginV2\PostAnalyzeNodeCapability;
+use Phan\PluginV3;
+use Phan\PluginV3\PostAnalyzeNodeCapability;
 
 /**
  * Class AnnotationPlugin
@@ -14,6 +14,6 @@ use Phan\PluginV2\PostAnalyzeNodeCapability;
  *
  * @author BobV
  */
-abstract class AnnotationPlugin extends PluginV2 implements PostAnalyzeNodeCapability
+abstract class AnnotationPlugin extends PluginV3 implements PostAnalyzeNodeCapability
 {
 }

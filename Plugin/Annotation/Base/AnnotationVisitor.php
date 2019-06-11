@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../Helper/NamespaceChecker.php';
 
 use Drenso\PhanExtensions\Helper\NamespaceChecker;
 use Phan\Language\Type;
-use Phan\PluginV2\PluginAwarePostAnalysisVisitor;
+use Phan\PluginV3\PluginAwarePostAnalysisVisitor;
 use ast\Node;
 
 /**

@@ -5,9 +5,9 @@ namespace Drenso\PhanExtensions\Plugin\DocComment;
 require_once __DIR__ . '/../../Helper/NamespaceChecker.php';
 
 use Drenso\PhanExtensions\Helper\NamespaceChecker;
-use Phan\PluginV2;
-use Phan\PluginV2\PluginAwarePostAnalysisVisitor;
-use Phan\PluginV2\PostAnalyzeNodeCapability;
+use Phan\PluginV3;
+use Phan\PluginV3\PluginAwarePostAnalysisVisitor;
+use Phan\PluginV3\PostAnalyzeNodeCapability;
 use ast\Node;
 
 /**
@@ -15,7 +15,7 @@ use ast\Node;
  *
  * @suppress PhanDeprecatedInterface
  */
-class MethodPlugin extends PluginV2 implements PostAnalyzeNodeCapability
+class MethodPlugin extends PluginV3 implements PostAnalyzeNodeCapability
 {
   public static function getPostAnalyzeNodeVisitorClassName(): string
   {

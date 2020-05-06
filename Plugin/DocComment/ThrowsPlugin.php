@@ -41,7 +41,8 @@ class ThrowsVisitor extends PluginAwarePostAnalysisVisitor
   public function visitMethod(Node $node)
   {
     // Retrieve the doc block
-    $docComment = $node->children['docComment'];
+    /* @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset */
+    $docComment = array_key_exists('docComment', $node->children) ? $node->children['docComment'] : NULL;
 
     // Ignore empty doc blocks
     if ($docComment === NULL || strlen($docComment) == 0) {

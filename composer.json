@@ -8,7 +8,7 @@
         "sort-packages": true
     },
     "require-dev": {
-        "phan/phan": "~1|~2"
+        "phan/phan": "~2|~3"
     },
     "license": "MIT",
     "authors": [

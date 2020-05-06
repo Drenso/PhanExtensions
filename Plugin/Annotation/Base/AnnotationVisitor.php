@@ -76,7 +76,8 @@ abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
   private function checkDocComment(Node $node)
   {
     // Retrieve the doc block
-    $docComment = $node->children['docComment'];
+    /* @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset */
+    $docComment = array_key_exists('docComment', $node->children) ? $node->children['docComment'] : NULL;
 
     // Ignore empty doc blocks
     if ($docComment === NULL || strlen($docComment) == 0) {
@@ -101,6 +102,7 @@ abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
   private function starts_with_upper($str)
   {
     $chr = mb_substr($str, 0, 1, "UTF-8");
+
     return mb_strtolower($chr, "UTF-8") != $chr;
   }
 }

@@ -11,3 +11,9 @@ namespace Annotations {
 
   }
 }
+
+namespace Constants {
+  class Properties {
+    const TEST = true;
+  }
+}

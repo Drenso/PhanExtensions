@@ -5,6 +5,7 @@ namespace Drenso\PhanExtensions\Visitor\Annotation\Base;
 require_once __DIR__ . '/../../../Helper/NamespaceChecker.php';
 
 use Drenso\PhanExtensions\Helper\NamespaceChecker;
+use Phan\Language\FQSEN;
 use Phan\Language\Type;
 use Phan\PluginV3\PluginAwarePostAnalysisVisitor;
 use ast\Node;
@@ -125,9 +126,14 @@ abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
       // Check for exceptions
       if (in_array($classToBeResolved, $this->exceptions)) continue;
 
-      if (!$fqsClass = NamespaceChecker::resolveClassFQS($this->context, $classToBeResolved)) {
-        // If not resolved, ignore it
-        continue;
+      // It might be fully qualified already, so try that first
+      // Note that it does not need to start with a \ for Doctrine
+      $fqsClass = FQSEN\FullyQualifiedClassName::fromFullyQualifiedString($classToBeResolved);
+      if (!$this->code_base->hasClassWithFQSEN($fqsClass)) {
+        if (!$fqsClass = NamespaceChecker::resolveClassFQS($this->context, $classToBeResolved)) {
+          // If not resolved, ignore it
+          continue;
+        }
       }
 
       if (!$this->code_base->hasClassWithFQSEN($fqsClass)) {

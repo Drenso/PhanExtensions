@@ -5,7 +5,7 @@ namespace Some\Name\Space;
 use Annotations\Number1;
 use Constants\Properties;
 
-class Class014
+class Class013
 {
 
   /**

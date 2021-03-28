@@ -96,7 +96,7 @@ class NamespaceChecker
     while ($type instanceof GenericArrayType) {
       $type = $type->genericArrayElementType();
     }
-    if ($type->isNativeType() || ($type->isSelfType() | $type->isStaticType())) {
+    if ($type->isNativeType() || ($type->isSelfType() || $type->isStaticType())) {
       return NULL;
     }
     if ($type instanceof TemplateType) {

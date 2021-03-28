@@ -22,7 +22,7 @@ abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
 
   const annotation_regex = '/@(' . Type::simple_type_regex . ')[\(]?/';
   const class_name_resolution_regex = '/(' . Type::simple_type_regex . ')::class/';
-  const const_reference_regex = '/(' . Type::simple_type_regex . ')::([a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)/';
+  const const_reference_regex = '/(' . Type::simple_type_regex . ')::([a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)(\.html\.twig)?/';
 
   /**
    * Holds the exceptions for a specific framework
@@ -118,6 +118,11 @@ abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
       // Test if not class constant
       $const = $matches[3][$key];
       if ($const === 'class') {
+        continue;
+      }
+
+      // Test if not .html.twig
+      if (($matches[4][$key] ?? '') === '.html.twig'){
         continue;
       }
 

@@ -10,10 +10,16 @@ namespace Annotations {
   {
 
   }
+
+  class Template
+  {
+
+  }
 }
 
 namespace Constants {
-  class Properties {
+  class Properties
+  {
     const TEST = true;
   }
 }

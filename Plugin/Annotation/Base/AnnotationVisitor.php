@@ -20,7 +20,7 @@ use ast\Node;
 abstract class AnnotationVisitor extends PluginAwarePostAnalysisVisitor
 {
 
-  const annotation_regex = '/@(' . Type::simple_type_regex . ')[\(]?/';
+  const annotation_regex = '/[^"]@(' . Type::simple_type_regex . ')[\(]?/';
   const class_name_resolution_regex = '/(' . Type::simple_type_regex . ')::class/';
   const const_reference_regex = '/(' . Type::simple_type_regex . ')::([a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)(\.html\.twig)?/';
 

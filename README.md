@@ -12,8 +12,8 @@ We currently have the following plugins available:
 Parses all annotation that start with an uppercase letter, in order to check whether they have been imported into
 the file, and to remove unused warnings from vanilla Phan if they are used correctly. 
 
-The Symfony version of this plugin (currently the only one) ignores the `Annotation` and `Target` annotation which 
-are used in validator definitions.
+The Symfony version of this plugin (currently the only one) ignores the `Annotation`, `Target`, `Require` and `SuppressWarnings` 
+annotations by default.
   
 #### DocComment\InlineVarPlugin
 

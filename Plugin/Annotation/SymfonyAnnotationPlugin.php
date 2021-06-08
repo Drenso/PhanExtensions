@@ -44,7 +44,7 @@ class SymfonyAnnotationVisitor extends AnnotationVisitor
   protected $exceptions = [
       'Annotation',
       'Target',
-      'Require',
+      'Required',
       'SuppressWarnings'
   ];
 }

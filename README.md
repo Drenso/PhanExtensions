@@ -1,6 +1,8 @@
 # PhanExtensions
 This project contains several extensions (stubs/plugins) to be used with Phan for static PHP analysis.
 
+> Note: This project is no longer actively maintained!
+
 [![Build Status](https://travis-ci.org/Drenso/PhanExtensions.svg?branch=master)](https://travis-ci.org/Drenso/PhanExtensions)
 
 ## Plugins
